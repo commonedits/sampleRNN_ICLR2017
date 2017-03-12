@@ -652,6 +652,8 @@ while True:
             print "\n>>> Best validation cost of {} reached. Testing!"\
                     .format(valid_cost),
             test_cost, test_time = monitor(test_feeder)
+            print test_cost
+            print test_time
             print "Done!"
             # Report last one which is the lowest on validation set:
             print ">>> test cost:{}\ttotal time:{}".format(test_cost, test_time)
