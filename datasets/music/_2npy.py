@@ -33,7 +33,7 @@ arr = [(scikits.audiolab.flacread(p)[0]).astype('float16') for p in paths]
 np_arr = np.array(arr)
 
 # 88/6/6 split 
-length = len(np_array)
+length = len(np_arr)
 train_size = np.floor(length * .88) # train
 test_size = np.floor(length * .06) # test
 
@@ -41,3 +41,5 @@ np.save('all_kurt.npy', np_arr)
 np.save('kurt_train.npy', np_arr[:train_size])
 np.save('kurt_valid.npy', np_arr[train_size:train_size + test_size])
 np.save('kurt_test.npy', np_arr[train_size + test_size:])
+
+
