@@ -14,7 +14,7 @@ with open(os.path.join(RAW_DATA_DIR, 'preprocess_file_list.txt'), 'w') as f:
             f.write("file '" + filename + "'\n")
 
 # Step 2: concatenate everything into one massive wav file
-os.system("ffmpeg -f concat -safe 0 -i {}/preprocess_file_list.txt {}/preprocess_all_audio.wav".format(OUTPUT_DIR, OUTPUT_DIR))
+os.system("ffmpeg -f concat -safe 0 -i {}/preprocess_file_list.txt {}/preprocess_all_audio.wav".format(RAW_DATA_DIR, OUTPUT_DIR))
 
 # # get the length of the resulting file
 length = float(subprocess.check_output('ffprobe -i {}/preprocess_all_audio.wav -show_entries format=duration -v quiet -of csv="p=0"'.format(OUTPUT_DIR), shell=True))
@@ -25,4 +25,4 @@ for i in xrange(int(length)//8 - 1):
 
 # # Step 4: clean up temp files
 os.system('rm {}/preprocess_all_audio.wav'.format(OUTPUT_DIR))
-os.system('rm {}/preprocess_file_list.txt'.format(OUTPUT_DIR))
+os.system('rm {}/preprocess_file_list.txt'.format(RAW_DATA_DIR))
