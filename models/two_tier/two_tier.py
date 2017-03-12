@@ -602,7 +602,7 @@ if RESUME:
 
 while True:
     # THIS IS ONE ITERATION
-    if total_iters % 500 == 0:
+    if total_iters % 10 == 0:
         print total_iters,
 
     total_iters += 1
