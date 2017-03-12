@@ -31,6 +31,11 @@ __music_train_mean_std = np.array([-2.7492260671334582e-05,
 # TODO:
 #__huck_train_mean_std = ...
 
+__kurt_file = 'music/kurt_{}.npy'  # in float16 8secs*16000samples/sec
+
+
+
+
 __train = lambda s: s.format('train')
 __valid = lambda s: s.format('valid')
 __test = lambda s: s.format('test')
@@ -404,6 +409,143 @@ def music_test_feed_epoch(*args):
     files = numpy.load(data_path)
     generator = __music_feed_epoch(files, *args)
     return generator
+
+
+
+
+### MUSIC DATASET LOADER ###
+def __kurt_feed_epoch(files,
+                       batch_size,
+                       seq_len,
+                       overlap,
+                       q_levels,
+                       q_zero,
+                       q_type,
+                       real_valued=False):
+    """
+    Helper function to load music dataset.
+    Generator that yields training inputs (subbatch, reset). `subbatch` contains
+    quantized audio data; `reset` is a boolean indicating the start of a new
+    sequence (i.e. you should reset h0 whenever `reset` is True).
+
+    Feeds subsequences which overlap by a specified amount, so that the model
+    can always have target for every input in a given subsequence.
+
+    Assumes all flac files have the same length.
+
+    returns: (subbatch, reset)
+    subbatch.shape: (BATCH_SIZE, SEQ_LEN + OVERLAP)
+    reset: True or False
+    """
+    batches = __make_random_batches(files, batch_size)
+
+    for bch in batches:
+        # batch_seq_len = length of longest sequence in the batch, rounded up to
+        # the nearest SEQ_LEN.
+        batch_seq_len = len(bch[0])  # should be 8*16000
+        batch_seq_len = __round_to(batch_seq_len, seq_len)
+
+        batch = numpy.zeros(
+            (batch_size, batch_seq_len),
+            dtype='float64'
+        )
+
+        mask = numpy.ones(batch.shape, dtype='float32')
+
+        for i, data in enumerate(bch):
+            #data, fs, enc = scikits.audiolab.flacread(path)
+            # data is float16 from reading the npy file
+            batch[i, :len(data)] = data
+            # This shouldn't change anything. All the flac files for Music
+            # are the same length and the mask should be 1 every where.
+            # mask[i, len(data):] = numpy.float32(0)
+
+        if not real_valued:
+            batch = __batch_quantize(batch, q_levels, q_type)
+
+            batch = numpy.concatenate([
+                numpy.full((batch_size, overlap), q_zero, dtype='int32'),
+                batch
+            ], axis=1)
+        else:
+            batch -= __kurt_train_mean_std[0]
+            batch /= __kurt_train_mean_std[1]
+            batch = numpy.concatenate([
+                numpy.full((batch_size, overlap), 0, dtype='float32'),
+                batch
+            ], axis=1).astype('float32')
+
+        mask = numpy.concatenate([
+            numpy.full((batch_size, overlap), 1, dtype='float32'),
+            mask
+        ], axis=1)
+
+        for i in xrange(batch_seq_len // seq_len):
+            reset = numpy.int32(i==0)
+            subbatch = batch[:, i*seq_len : (i+1)*seq_len + overlap]
+            submask = mask[:, i*seq_len : (i+1)*seq_len + overlap]
+            yield (subbatch, reset, submask)
+
+def kurt_train_feed_epoch(*args):
+    """
+    :parameters:
+        batch_size: int
+        seq_len:
+        overlap:
+        q_levels:
+        q_zero:
+        q_type: One the following 'linear', 'a-law', or 'mu-law'
+
+    4,340 (9.65 hours) in total
+    With batch_size = 128:
+        4,224 (9.39 hours) in total
+        3,712 (88%, 8.25 hours)for training set
+        256 (6%, .57 hours) for validation set
+        256 (6%, .57 hours) for test set
+
+    Note:
+        32 of Beethoven's piano sonatas available on archive.org (Public Domain)
+
+    :returns:
+        A generator yielding (subbatch, reset, submask)
+    """
+    # Just check if valid/test sets are also available. If not, raise.
+    find_dataset(__valid(__kurt_file))
+    find_dataset(__test(__kurt_file))
+    # Load train set
+    data_path = find_dataset(__train(__kurt_file))
+    files = numpy.load(data_path)
+    generator = __kurt_feed_epoch(files, *args)
+    return generator
+
+def kurt_valid_feed_epoch(*args):
+    """
+    See:
+        kurt_train_feed_epoch
+    """
+    data_path = find_dataset(__valid(__kurt_file))
+    files = numpy.load(data_path)
+    generator = __kurt_feed_epoch(files, *args)
+    return generator
+
+def kurt_test_feed_epoch(*args):
+    """
+    See:
+        kurt_train_feed_epoch
+    """
+    data_path = find_dataset(__test(__kurt_file))
+    files = numpy.load(data_path)
+    generator = __kurt_feed_epoch(files, *args)
+    return generator
+
+
+
+
+
+
+
+
+
 
 def __huck_feed_epoch(files,
                       batch_size,
