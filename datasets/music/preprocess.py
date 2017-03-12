@@ -11,7 +11,7 @@ print OUTPUT_DIR
 with open(os.path.join(OUTPUT_DIR, 'preprocess_file_list.txt'), 'w') as f:
     for dirpath, dirnames, filenames in os.walk(RAW_DATA_DIR):
         for filename in filenames:
-            f.write("file '" + dirpath + '/'+ filename + "'\n")
+            f.write("file '" + filename + "'\n")
 
 # Step 2: concatenate everything into one massive wav file
 os.system("ffmpeg -f concat -safe 0 -i {}/preprocess_file_list.txt {}/preprocess_all_audio.wav".format(OUTPUT_DIR, OUTPUT_DIR))
