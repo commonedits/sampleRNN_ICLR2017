@@ -170,6 +170,9 @@ SEQ_LEN = N_FRAMES * FRAME_SIZE # Total length (# of samples) of each truncated 
 Q_ZERO = numpy.int32(Q_LEVELS//2) # Discrete value correponding to zero amplitude
 
 
+print "SEQ_LEN", SEQ_LEN, N_FRAMES, FRAME_SIZE
+
+
 epoch_str = 'epoch'
 iter_str = 'iter'
 lowest_valid_str = 'lowest valid cost'
