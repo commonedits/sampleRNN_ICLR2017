@@ -112,9 +112,9 @@ def get_args():
             or mu-law compandig. With mu-/a-law quantization level shoud be set as 256',\
             choices=['linear', 'a-law', 'mu-law'], required=True)
     parser.add_argument('--which_set', help='ONOM, BLIZZ, MUSIC, or HUCK',
-            choices=['ONOM', 'BLIZZ', 'MUSIC', 'HUCK'], required=True)
+            choices=['ONOM', 'BLIZZ', 'MUSIC', 'HUCK', "KURT"], required=True)
     parser.add_argument('--batch_size', help='size of mini-batch',
-            type=check_positive, choices=[64, 128, 256], required=True)
+            type=check_positive, choices=xrange(1,1000000), required=True)
 
     parser.add_argument('--debug', help='Debug mode', required=False, default=False, action='store_true')
     parser.add_argument('--resume', help='Resume the same model from the last\
@@ -242,6 +242,11 @@ elif WHICH_SET == 'HUCK':
     from datasets.dataset import huck_valid_feed_epoch as valid_feeder
     from datasets.dataset import huck_test_feed_epoch  as test_feeder
 
+elif WHICH_SET == 'KURT':
+    from datasets.dataset import kurt_train_feed_epoch as train_feeder
+    from datasets.dataset import kurt_valid_feed_epoch as valid_feeder
+    from datasets.dataset import kurt_test_feed_epoch  as test_feeder
+    
 def load_data(data_feeder):
     """
     Helper function to deal with interface of different datasets.
