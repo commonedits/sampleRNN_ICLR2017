@@ -440,7 +440,7 @@ def __kurt_feed_epoch(files,
     batches = __make_random_batches(files, batch_size)    
     print "\n\n"
 
-    print  batches.shape
+    #print  batches.shape
     print "\n\n"
     for bch in batches:
         # batch_seq_len = length of longest sequence in the batch, rounded up to
@@ -448,7 +448,7 @@ def __kurt_feed_epoch(files,
         batch_seq_len = len(bch[0])  # should be 8*16000
         batch_seq_len = __round_to(batch_seq_len, seq_len)
 
-        print "batch_seq_len", batch_seq_len, "\n"
+        #print "batch_seq_len", batch_seq_len, "\n"
         batch = numpy.zeros(
             (batch_size, batch_seq_len),
             dtype='float64'
@@ -465,17 +465,17 @@ def __kurt_feed_epoch(files,
             # mask[i, len(data):] = numpy.float32(0)
 
         if not real_valued:
-            print "batch.concat", batch.shape 
+            #print "batch.concat", batch.shape 
             batch = __batch_quantize(batch, q_levels, q_type)
             
-            print "batch quantized", batch.shape 
+            #print "batch quantized", batch.shape 
 
             batch = numpy.concatenate([
                 numpy.full((batch_size, overlap), q_zero, dtype='int32'),
                 batch
             ], axis=1)
 
-            print "batch.concat", batch.shape 
+            #print "batch.concat", batch.shape 
         else:
             batch -= __kurt_train_mean_std[0]
             batch /= __kurt_train_mean_std[1]
