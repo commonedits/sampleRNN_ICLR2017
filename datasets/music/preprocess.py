@@ -8,7 +8,7 @@ print RAW_DATA_DIR
 print OUTPUT_DIR
 
 # Step 1: write all filenames to a list
-with open(os.path.join(OUTPUT_DIR, 'preprocess_file_list.txt'), 'w') as f:
+with open(os.path.join(RAW_DATA_DIR, 'preprocess_file_list.txt'), 'w') as f:
     for dirpath, dirnames, filenames in os.walk(RAW_DATA_DIR):
         for filename in filenames:
             f.write("file '" + filename + "'\n")
