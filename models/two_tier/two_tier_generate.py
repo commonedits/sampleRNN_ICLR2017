@@ -543,7 +543,7 @@ def generate_and_save_samples(tag, N_SECS=5):
     total_time = time() - total_time
     log = "{} samples of {} seconds length generated in {} seconds."
     log = log.format(N_SEQS, N_SECS, total_time)
-    print log,
+    print log
 
     for i in xrange(N_SEQS):
         samp = samples[i]
@@ -556,7 +556,11 @@ def generate_and_save_samples(tag, N_SECS=5):
         now = datetime.datetime.now()
         now_time = "{}:{}:{}".format(now.hour, now.minute, now.second)
 
-        write_audio_file("sample_{}_{}_{}".format(tag, N_SECS, now_time), samp)
+        file_name = "sample_{}_{}_{}_{}".format(tag, N_SECS, now_time, i)
+        print "writing...", file_name
+        write_audio_file(file_name, samp)
+
+
 
 def monitor(data_feeder):
     """
