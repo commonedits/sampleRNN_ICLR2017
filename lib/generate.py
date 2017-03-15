@@ -3,20 +3,19 @@ import scipy.io.wavfile
 import glob
 import sys
 import numpy
+import pickle
 
-name = '*' + sys.argv[1] + '*/args.pkl'
-with open(glob.glob(name)) as f:
-    #params = f.readfile()
-    pickle.load(f)
-    print pickle
-    exit()
-    ###grab this stuff
-    #args
-    #Q_TYPE
-    #Q_TEVELS
-    #N_RNN
-    #DIM
-    #FRAME_SIZE
+name = glob.glob("../results*/" + name + "/args.pkl")[0]
+params = pickle.load(open(name, "r"))
+print pickle
+exit()
+###grab this stuff
+#args
+#Q_TYPE
+#Q_TEVELS
+#N_RNN
+#DIM
+#FRAME_SIZE
 
 BITRATE = 16000
 N_SEQS = 20  # Number of samples to generate every time monitoring.
