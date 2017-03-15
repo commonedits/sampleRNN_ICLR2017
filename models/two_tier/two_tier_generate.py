@@ -643,7 +643,10 @@ if True: #if Resume:
 
     # 5. Generate and save samples (time consuming)
     # If not successful, we still have the params to sample afterward
-    print "Sampling!",
+
+
+    print "Sampling!"
+    print "{} seconds x {} sequences".format(N_SECS, N_SEQS)
     # Generate samples
     generate_and_save_samples(tag, N_SECS)
     print "Done!"
