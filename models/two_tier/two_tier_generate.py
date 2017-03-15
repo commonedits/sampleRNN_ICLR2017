@@ -116,6 +116,8 @@ def get_args():
 
     parser.add_argument('--n_secs', help='Seconds to generate',\
             type=check_positive, required=True)
+    parser.add_argument('--n_seqs', help='Number wavs to generate',\
+            type=check_positive, required=True)
 
 
     args = parser.parse_args()
@@ -124,6 +126,7 @@ def get_args():
     # Create tag for this experiment based on passed args
     tag = reduce(lambda a, b: a+b, sys.argv).replace('--resume', '').replace('/', '-').replace('--', '-').replace('True', 'T').replace('False', 'F')
     tag = re.sub(r'-n_secs[0-9]+', "", tag)
+    tag = re.sub(r'-n_seqs[0-9]+', "", tag)
     tag = re.sub(r'_generate', "", tag)
     tag += '-lr'+str(LEARNING_RATE)
     print "Created experiment tag for these args:"
@@ -152,6 +155,8 @@ WHICH_SET = args.which_set
 BATCH_SIZE = args.batch_size
 RESUME = args.resume
 N_SECS = args.n_secs
+N_SEQS = args.n_seqs  
+
 
 print "hi"
 
@@ -176,7 +181,6 @@ STOP_ITERS = 100000 # Stop after this many iterations
 # TODO:
 PRINT_TIME = 90*60 # Print cost, generate samples, save model checkpoint every N seconds.
 STOP_TIME = 60*60*24*3 # Stop after this many seconds of actual training (not including time req'd to generate samples etc.)
-N_SEQS = 20  # Number of samples to generate every time monitoring.
 # TODO:
 RESULTS_DIR = 'results_2t'
 FOLDER_PREFIX = os.path.join(RESULTS_DIR, tag)
