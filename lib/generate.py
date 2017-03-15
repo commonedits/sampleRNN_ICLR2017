@@ -2,22 +2,28 @@ from time import time
 import scipy.io.wavfile
 import glob
 import sys
+import numpy
 
-BITRATE = 16000
-N_SEQS = 20  # Number of samples to generate every time monitoring.
-
-Q_ZERO = numpy.int32(Q_LEVELS//2) # Discrete value correponding to zero amplitude
-H0_MULT = 1
-RESULTS_DIR = 'results_2t'
-name = '*' + sys.argv[1] + '*/ars.pkl'
+name = '*' + sys.argv[1] + '*/args.pkl'
 with open(glob.glob(name)) as f:
-    params = f.readfile()
+    #params = f.readfile()
+    pickle.load(f)
+    print pickle
+    exit()
     ###grab this stuff
     #args
     #Q_TYPE
+    #Q_TEVELS
     #N_RNN
     #DIM
     #FRAME_SIZE
+
+BITRATE = 16000
+N_SEQS = 20  # Number of samples to generate every time monitoring.
+Q_ZERO = numpy.int32(Q_LEVELS//2) # Discrete value correponding to zero amplitude
+H0_MULT = 1
+RESULTS_DIR = 'results_2t'
+
 FOLDER_PREFIX = os.path.join(RESULTS_DIR, tag)
 ### Create directories ###
 #   FOLDER_PREFIX: root, contains:
