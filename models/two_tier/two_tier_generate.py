@@ -112,7 +112,9 @@ def get_args():
     parser.add_argument('--resume', help='Resume the same model from the last checkpoint. Order of params are important. [for now]',\
             required=False, default=False, action='store_true')
 
-    parser.add_argument('--n_secs', help='Seconds to generate', type=check_positive, choices=xrange(0,999999), required=False, default=5, action='store_true')
+    parser.add_argument('--n_secs', help='Seconds to generate',\
+            type=check_positive, required=True)
+
 
     args = parser.parse_args()
 
