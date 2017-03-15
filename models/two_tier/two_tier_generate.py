@@ -590,7 +590,7 @@ h0 = numpy.zeros((BATCH_SIZE, N_RNN, H0_MULT*DIM), dtype='float32')
 tr_feeder = load_data(train_feeder)
 
 ### Handling the resume option:
-if RESUME:
+if True: #if Resume:
     # Check if checkpoint from previous run is not corrupted.
     # Then overwrite some of the variables above.
     iters_to_consume, res_path, epoch, total_iters,\
