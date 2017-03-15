@@ -5,7 +5,7 @@ import sys
 import numpy
 import pickle
 
-name = glob.glob("../results*/" + name + "/args.pkl")[0]
+name = glob.glob("../results*/" + sys.argv[1] + "/args.pkl")[0]
 params = pickle.load(open(name, "r"))
 print pickle
 exit()
