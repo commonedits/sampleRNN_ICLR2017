@@ -9,7 +9,7 @@ N_SEQS = 20  # Number of samples to generate every time monitoring.
 Q_ZERO = numpy.int32(Q_LEVELS//2) # Discrete value correponding to zero amplitude
 H0_MULT = 1
 RESULTS_DIR = 'results_2t'
-name = '*'sys.argv[1].'*/ars.pkl'
+name = '*' + sys.argv[1] + '*/ars.pkl'
 with open(glob.glob(name)) as f:
     params = f.readfile()
     ###grab this stuff
