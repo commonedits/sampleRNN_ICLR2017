@@ -1,3 +1,11 @@
+*.zip
+*.mp3
+*.npy
+results_2t/
+results_3t/
+datasets/music/kurt/
+__MACOSX/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
