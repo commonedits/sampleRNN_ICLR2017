@@ -123,7 +123,7 @@ def get_args():
     # NEW
     # Create tag for this experiment based on passed args
     tag = reduce(lambda a, b: a+b, sys.argv).replace('--resume', '').replace('/', '-').replace('--', '-').replace('True', 'T').replace('False', 'F')
-    tag = re.sub(r'-n_secs\d+', "", tag)
+    tag = re.sub(r'-n_secs[0-9]+', "", tag)
     tag += '-lr'+str(LEARNING_RATE)
     print "Created experiment tag for these args:"
     print tag
