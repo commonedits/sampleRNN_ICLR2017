@@ -105,7 +105,7 @@ def get_args():
     parser.add_argument('--which_set', help='ONOM, BLIZZ, or MUSIC, or KURT',
             choices=['ONOM', 'BLIZZ', 'MUSIC', 'KURT'], required=True)
     parser.add_argument('--batch_size', help='size of mini-batch',
-            type=check_positive, choices=xrange(1,10000), required=True)
+            type=check_positive, choices=xrange(64,128), required=True)
 
     parser.add_argument('--debug', help='Debug mode', required=False, default=False, action='store_true')
     # NEW
@@ -126,6 +126,9 @@ def get_args():
 
 args, tag = get_args()
 
+
+print "sup" 
+
 N_FRAMES = args.n_frames # How many 'frames' to include in each truncated BPTT pass
 OVERLAP = FRAME_SIZE = args.frame_size # How many samples per frame
 WEIGHT_NORM = args.weight_norm
@@ -142,6 +145,8 @@ WHICH_SET = args.which_set
 BATCH_SIZE = args.batch_size
 RESUME = args.resume
 N_SECS = args.n_secs
+
+print "hi"
 
 if Q_TYPE == 'mu-law' and Q_LEVELS != 256:
     raise ValueError('For mu-law Quantization levels should be exactly 256!')
